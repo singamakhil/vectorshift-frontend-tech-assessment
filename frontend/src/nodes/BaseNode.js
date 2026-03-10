@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 
-export const BaseNode = ({ id, data, config }) => {
+export const BaseNode = ({ id, data, config, style, onFieldChange }) => {
     const { title, color, inputs, outputs, fields } = config;
     const [isHovered, setIsHovered] = useState(false);
 
@@ -14,6 +14,7 @@ export const BaseNode = ({ id, data, config }) => {
 
     const handleFieldChange = (name, value) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
+        if (onFieldChange) onFieldChange(name, value);
     };
 
     const nodeStyles = {
@@ -26,6 +27,7 @@ export const BaseNode = ({ id, data, config }) => {
         overflow: 'hidden',
         color: 'var(--text-primary)',
         transition: 'border-color 0.2s ease',
+        ...style, // Allow style overrides (e.g., dynamic width/height)
     };
 
     const headerStyles = {
@@ -132,8 +134,8 @@ export const BaseNode = ({ id, data, config }) => {
                             </select>
                         ) : field.type === 'textarea' ? (
                             <textarea
-                                style={{ ...inputStyles, resize: 'none' }}
-                                rows={3}
+                                style={{ ...inputStyles, resize: 'none', flexGrow: 1 }}
+                                rows={field.rows || 1}
                                 value={formData[field.name]}
                                 onChange={(e) => handleFieldChange(field.name, e.target.value)}
                                 onFocus={(e) => (e.target.style.borderColor = 'var(--accent)')}
