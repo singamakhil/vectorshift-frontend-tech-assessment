@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Handle, Position } from 'reactflow';
 
-export const BaseNode = ({ id, data, config, style, onFieldChange }) => {
+export const BaseNode = ({ id, data, config, style, onFieldChange, children }) => {
     const { title, color, inputs, outputs, fields } = config;
     const [isHovered, setIsHovered] = useState(false);
 
