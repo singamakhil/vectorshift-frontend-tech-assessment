@@ -17,20 +17,22 @@ export const BaseNode = ({ id, data, config }) => {
 
     const nodeStyles = {
         width: 200,
-        backgroundColor: '#fff',
-        border: `1px solid ${color || '#ccc'}`,
+        backgroundColor: 'var(--bg-node)',
+        border: `1px solid ${color || 'var(--border)'}`,
         borderRadius: '8px',
-        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
         fontSize: '12px',
         overflow: 'hidden',
+        color: 'var(--text-primary)',
     };
 
     const headerStyles = {
-        backgroundColor: color || '#f3f4f6',
+        backgroundColor: color || 'var(--bg-toolbar)',
         padding: '8px',
         color: '#fff',
         fontWeight: 'bold',
-        borderBottom: `1px solid ${color || '#ccc'}`,
+        borderBottom: `1px solid ${color || 'var(--border)'}`,
+        opacity: 0.9,
     };
 
     const contentStyles = {
@@ -43,14 +45,17 @@ export const BaseNode = ({ id, data, config }) => {
     const fieldStyles = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '2px',
+        gap: '4px',
     };
 
     const inputStyles = {
-        padding: '4px',
-        border: '1px solid #d1d5db',
+        padding: '6px',
+        backgroundColor: 'var(--bg-canvas)',
+        border: '1px solid var(--border)',
         borderRadius: '4px',
         fontSize: '11px',
+        color: 'var(--text-primary)',
+        outline: 'none',
     };
 
     return (
@@ -62,7 +67,10 @@ export const BaseNode = ({ id, data, config }) => {
                     type="target"
                     position={Position.Left}
                     id={`${id}-${input.id}`}
-                    style={{ top: `${((index + 1) * 100) / (inputs.length + 1)}%` }}
+                    style={{
+                        top: `${((index + 1) * 100) / (inputs.length + 1)}%`,
+                        background: 'var(--accent)'
+                    }}
                 />
             ))}
 
@@ -75,7 +83,7 @@ export const BaseNode = ({ id, data, config }) => {
             <div style={contentStyles}>
                 {fields?.map((field) => (
                     <div key={field.name} style={fieldStyles}>
-                        <label style={{ fontWeight: '500' }}>{field.label || field.name}</label>
+                        <label style={{ fontWeight: '500', color: 'var(--text-muted)' }}>{field.label || field.name}</label>
                         {field.type === 'select' ? (
                             <select
                                 style={inputStyles}
@@ -83,8 +91,8 @@ export const BaseNode = ({ id, data, config }) => {
                                 onChange={(e) => handleFieldChange(field.name, e.target.value)}
                             >
                                 {field.options?.map((opt) => (
-                                    <option key={opt.value} value={opt.value}>
-                                        {opt.label}
+                                    <option key={typeof opt === 'string' ? opt : opt.value} value={typeof opt === 'string' ? opt : opt.value}>
+                                        {typeof opt === 'string' ? opt : opt.label}
                                     </option>
                                 ))}
                             </select>
@@ -114,7 +122,10 @@ export const BaseNode = ({ id, data, config }) => {
                     type="source"
                     position={Position.Right}
                     id={`${id}-${output.id}`}
-                    style={{ top: `${((index + 1) * 100) / (outputs.length + 1)}%` }}
+                    style={{
+                        top: `${((index + 1) * 100) / (outputs.length + 1)}%`,
+                        background: 'var(--accent)'
+                    }}
                 />
             ))}
         </div>
